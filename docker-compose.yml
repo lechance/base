@@ -5,7 +5,9 @@ services:
     build: .
     image: alpine:me
     container_name: alpine-me
+    restart: always
     hostname: alpine
+
     privileged: true
 
     stdin_open: true
