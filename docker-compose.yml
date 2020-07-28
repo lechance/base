@@ -3,9 +3,9 @@ version: "3.8"
 services:
   alpine-me:
     build: .
-    image: alpine:me
+    image: lechance/alpine:me
     container_name: alpine-me
-    restart: always
+    restart: unless-stopped
     hostname: alpine
 
     privileged: true
