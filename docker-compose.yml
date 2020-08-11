@@ -1,15 +1,17 @@
 version: "3.8"
 
 services:
-  alpine-me:
+  base:
     build: .
     image: lechance/alpine:me
-    container_name: alpine-me
+    container_name: base
     restart: unless-stopped
     hostname: alpine
 
     privileged: true
 
+    ports:
+      - 80:80
     stdin_open: true
     tty: true
     read_only: false
@@ -17,6 +19,7 @@ services:
       myName: "lechance"
     networks:
       - net
+
 networks:
   net:
     external: true
