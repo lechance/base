@@ -74,5 +74,7 @@ COPY ["docker-entrypoint.sh","/usr/local/bin/"]
 EXPOSE 22
 EXPOSE 80
 
+STOPSIGNAL SIGTERM
+
 ENTRYPOINT ["/sbin/tini", "--", "/bin/sh", "/usr/local/bin/docker-entrypoint.sh"]
 CMD ["/bin/sh"]
