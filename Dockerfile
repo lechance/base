@@ -13,7 +13,7 @@ LABEL org.label-schema.name="alpine:me" \
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
-RUN apk --update -t add openrc curl nginx python3 py3-pip openssh keepalived sudo bash grep iproute2 tcpdump tini && \
+RUN apk --update -t add openrc ipvsadm curl nginx python3 py3-pip openssh keepalived sudo bash grep iproute2 tcpdump tini && \
     rm -f /var/cache/apk/* /tmp/* && \
     rm -f /sbin/halt /sbin/poweroff /sbin/reboot
 
