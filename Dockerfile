@@ -10,13 +10,25 @@ LABEL org.label-schema.name="alpine:me" \
 #ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini  /tini
 #RUN chmod +x /tini
 
+ENV TIME_ZONE Asia/Shanghai
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+RUN echo "http://mirrors.aliyun.com/alpine/latest-stable/main/" > /etc/apk/repositories
+RUN echo "http://mirrors.aliyun.com/alpine/latest-stable/community/" >> /etc/apk/repositories
 
-RUN apk --update -t add openrc ipvsadm curl nginx python3 py3-pip openssh keepalived sudo bash grep iproute2 tcpdump tini && \
+#RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+
+RUN apk --update -t add openrc tzdata ipvsadm curl nginx python3 py3-pip openssh keepalived sudo bash grep iproute2 tcpdump tini && \
     rm -f /var/cache/apk/* /tmp/* && \
     rm -f /sbin/halt /sbin/poweroff /sbin/reboot
 
+RUN echo "${TIME_ZONE}" > /etc/timezone && \
+    ln -sf /usr/share/zoneinfo/${TIME_ZONE} /etc/localtime && \
+    sed -i "s/#PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config && \
+    ssh-keygen -t dsa -P "" -f /etc/ssh/ssh_host_dsa_key && \
+    ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key && \
+    ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecsdsa_key && \
+    ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key && \
+    echo "root:admin" | chpasswd
 
 RUN mkdir -p /run/openrc && \
     touch /run/openrc/softlevel 
