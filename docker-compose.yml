@@ -7,11 +7,21 @@ services:
     container_name: base
     restart: unless-stopped
     hostname: alpine
-
     privileged: true
-
-    ports:
-      - 8080:80
+    stdin_open: true
+    tty: true
+    read_only: false
+    environment:
+      myName: "lechance"
+    networks:
+      - net
+  base2:
+    #build: .
+    image: lechance/alpine:me
+    container_name: base2
+    restart: unless-stopped
+    hostname: alpine2
+    privileged: true
     stdin_open: true
     tty: true
     read_only: false

@@ -1,10 +1,7 @@
 #!/bin/sh
-set -xeu
+set -x
 
 service nginx stop
 service nginx start
 service sshd stop
 service sshd start
-service keepalived stop
-service keepalived start
-
