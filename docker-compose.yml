@@ -1,12 +1,27 @@
 version: "3.8"
 
 services:
-  base:
-    build: .
+  ka-master:
     image: lechance/alpine:me
-    container_name: base
+    container_name: ka-master
     restart: unless-stopped
     hostname: alpine
+    privileged: true
+    stdin_open: true
+    command: ["keepalived","-n","-f","/etc/keepalived/keepalived.conf"]
+    tty: true
+    read_only: false
+    environment:
+      myName: "lechance"
+    networks:
+      - net
+  ka-slave:
+    #build: .
+    image: lechance/alpine:me
+    container_name: ka-slave
+    restart: unless-stopped
+    hostname: alpine
+    command: ["keepalived","-n","-f","/etc/keepalived/keepalived.conf"]
     privileged: true
     stdin_open: true
     tty: true
@@ -15,14 +30,45 @@ services:
       myName: "lechance"
     networks:
       - net
-  base2:
+  haproxy1:
     #build: .
     image: lechance/alpine:me
-    container_name: base2
+    container_name: haproxy1
     restart: unless-stopped
-    hostname: alpine2
+    hostname: alpine
+    command: ["haproxy","-db","-f","/etc/haproxy/haproxy.cfg"]
     privileged: true
     stdin_open: true
+    tty: true
+    read_only: false
+    environment:
+      myName: "lechance"
+    networks:
+      - net
+  haproxy2:
+    #build: .
+    image: lechance/alpine:me
+    container_name: haproxy2
+    restart: unless-stopped
+    hostname: alpine
+    command: ["haproxy","-db","-f","/etc/haproxy/haproxy.cfg"]
+    privileged: true
+    stdin_open: true
+    tty: true
+    read_only: false
+    environment:
+      myName: "lechance"
+    networks:
+      - net
+  webserver:
+    #build: .
+    image: lechance/alpine:me
+    container_name: webserver
+    restart: unless-stopped
+    hostname: alpine
+    privileged: true
+    stdin_open: true
+    command: ["/usr/sbin/nginx","-g","daemon off;"]
     tty: true
     read_only: false
     environment:

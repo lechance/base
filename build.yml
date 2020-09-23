@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  base:
+    build: .
+    image: lechance/alpine:me
+    container_name: base
+    restart: unless-stopped
+    hostname: alpine
+    privileged: true
+    stdin_open: true
+    #command: ["/usr/sbin/nginx","-g","daemon off;"]
+    #command: ["keepalived","-n","-f","/etc/keepalived/keepalived.conf"]
+    #command: ["haproxy","-db","-f","/etc/haproxy/haproxy.cfg"]
+    tty: true
+    read_only: false
+    environment:
+      myName: "lechance"
+    networks:
+      - net
+
+networks:
+  net:
+    external: true

@@ -6,7 +6,8 @@ LABEL org.label-schema.name="alpine:me" \
       org.label-schema.version="latest" \
       org.label-schema.license="MIT"
 
-#ENV TINI_VERSION v0.19.0
+ENV TINI_VERSION v0.19.0
+
 #ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini  /tini
 #RUN chmod +x /tini
 
@@ -21,7 +22,7 @@ RUN set -eux && \
 
 #RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
-RUN apk --update -t add openrc tzdata ipvsadm curl nginx python3 py3-pip openssh keepalived sudo bash grep iproute2 tcpdump tini && \
+RUN apk --update -t add openrc tzdata haproxy ipvsadm curl nginx python3 py3-pip openssh keepalived sudo bash grep iproute2 tcpdump tini && \
     rm -f /var/cache/apk/* /tmp/* && \
     rm -f /sbin/halt /sbin/poweroff /sbin/reboot
 
@@ -99,3 +100,4 @@ STOPSIGNAL SIGTERM
 
 ENTRYPOINT ["/sbin/tini", "--", "/bin/sh", "/usr/local/bin/docker-entrypoint.sh"]
 CMD ["/bin/sh"]
+#CMD ["nginx","-g","daemon off;"]

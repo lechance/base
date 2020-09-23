@@ -1,7 +1,6 @@
 #!/bin/sh
 set -x
+rc-status
 
-service nginx stop
-service nginx start
 service sshd stop
 service sshd start
