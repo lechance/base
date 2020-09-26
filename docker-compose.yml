@@ -1,65 +1,35 @@
 version: "3.8"
 
 services:
-  ka-master:
+  lb1:
     image: lechance/alpine:me
-    container_name: ka-master
+    container_name: lb1
     restart: unless-stopped
     hostname: alpine
     privileged: true
     stdin_open: true
-    command: ["keepalived","-n","-f","/etc/keepalived/keepalived.conf"]
+    command: ["keepalived","-n","-f","/etc/keepalived/keepalived.conf","haproxy","-db","-f","/etc/haproxy/haproxy.cfg"]
     tty: true
     read_only: false
     environment:
       myName: "lechance"
     networks:
       - net
-  ka-slave:
-    #build: .
+  lb2:
     image: lechance/alpine:me
-    container_name: ka-slave
+    container_name: lb2
     restart: unless-stopped
     hostname: alpine
-    command: ["keepalived","-n","-f","/etc/keepalived/keepalived.conf"]
     privileged: true
     stdin_open: true
+    command: ["keepalived","-n","-f","/etc/keepalived/keepalived.conf","haproxy","-db","-f","/etc/haproxy/haproxy.cfg"]
     tty: true
     read_only: false
     environment:
       myName: "lechance"
     networks:
       - net
-  haproxy1:
-    #build: .
-    image: lechance/alpine:me
-    container_name: haproxy1
-    restart: unless-stopped
-    hostname: alpine
-    command: ["haproxy","-db","-f","/etc/haproxy/haproxy.cfg"]
-    privileged: true
-    stdin_open: true
-    tty: true
-    read_only: false
-    environment:
-      myName: "lechance"
-    networks:
-      - net
-  haproxy2:
-    #build: .
-    image: lechance/alpine:me
-    container_name: haproxy2
-    restart: unless-stopped
-    hostname: alpine
-    command: ["haproxy","-db","-f","/etc/haproxy/haproxy.cfg"]
-    privileged: true
-    stdin_open: true
-    tty: true
-    read_only: false
-    environment:
-      myName: "lechance"
-    networks:
-      - net
+
   webserver:
     #build: .
     image: lechance/alpine:me

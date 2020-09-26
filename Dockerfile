@@ -78,7 +78,7 @@ RUN set -x \
     # Can't do cgroups
     && sed -i 's/cgroup_add_service /# cgroup_add_service /g' /lib/rc/sh/openrc-run.sh \
     && sed -i 's/VSERVER/DOCKER/Ig' /lib/rc/sh/init.sh
-RUN echo "welcome nginx" > /root/www/index.htm
+RUN echo "welcome nginx: `hostname -i`" > /root/www/index.htm
 
 RUN sed -i '/return 404;/d' /etc/nginx/conf.d/default.conf \
     && sed -i '9a root \/root\/www;' /etc/nginx/conf.d/default.conf \
@@ -100,4 +100,3 @@ STOPSIGNAL SIGTERM
 
 ENTRYPOINT ["/sbin/tini", "--", "/bin/sh", "/usr/local/bin/docker-entrypoint.sh"]
 CMD ["/bin/sh"]
-#CMD ["nginx","-g","daemon off;"]
