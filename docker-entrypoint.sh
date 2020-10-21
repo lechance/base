@@ -12,6 +12,14 @@ echo ""
 if [[ "$RELEASE_VERSION" == "" ]]; then
   echo "Unknow version"
 fi
+echo "Start syslogd..."
+syslogd
+status=$?
+if [[ $status -ne 0 ]]; then
+  echo "Failed to start syslogd"
+  exit $status
+fi
+sleep 1s
 
 echo "Start Services..."
 sleep 3s

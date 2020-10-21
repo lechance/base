@@ -1,51 +1,21 @@
 version: "3.8"
 
 services:
-  lb1:
+  base:
     image: lechance/alpine:me
-    container_name: lb1
+    container_name: base
     restart: unless-stopped
     hostname: alpine
     privileged: true
     stdin_open: true
-    command: ["keepalived","-n","-f","/etc/keepalived/keepalived.conf","haproxy","-db","-f","/etc/haproxy/haproxy.cfg"]
     tty: true
-    read_only: false
+    #read_only: false
     environment:
       myName: "lechance"
+    ports:
+      - 80:80
     networks:
       - net
-  lb2:
-    image: lechance/alpine:me
-    container_name: lb2
-    restart: unless-stopped
-    hostname: alpine
-    privileged: true
-    stdin_open: true
-    command: ["keepalived","-n","-f","/etc/keepalived/keepalived.conf","haproxy","-db","-f","/etc/haproxy/haproxy.cfg"]
-    tty: true
-    read_only: false
-    environment:
-      myName: "lechance"
-    networks:
-      - net
-
-  webserver:
-    #build: .
-    image: lechance/alpine:me
-    container_name: webserver
-    restart: unless-stopped
-    hostname: alpine
-    privileged: true
-    stdin_open: true
-    command: ["/usr/sbin/nginx","-g","daemon off;"]
-    tty: true
-    read_only: false
-    environment:
-      myName: "lechance"
-    networks:
-      - net
-
 networks:
   net:
     external: true
